@@ -57,6 +57,9 @@ magma_int_t
 magma_malloc_pinned( void **ptrPtr, size_t bytes );
 
 magma_int_t
+magma_malloc_managed( void **ptrPtr, size_t bytes );
+
+magma_int_t
 magma_free_cpu( void *ptr );
 
 #define magma_free( ptr ) \

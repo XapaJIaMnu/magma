@@ -111,6 +111,22 @@ magma_int_t magma_malloc_pinned( void** ptrPtr, size_t size )
 }
 
 // --------------------
+// Allocate managed memory. Only available with compute 3.0+ and 64bit
+extern "C"
+magma_int_t
+magma_malloc_managed( void **ptrPtr, size_t size )
+{
+    // CUDA can't allocate 0 bytes, so allocate some minimal size
+    // (for pinned memory, the error is detected in free)
+    if ( size == 0 )
+        size = sizeof(magmaDoubleComplex);
+    if ( cudaSuccess != cudaMallocManaged( ptrPtr, size )) {
+        return MAGMA_ERR_HOST_ALLOC;
+    }
+    return MAGMA_SUCCESS;
+}
+
+// --------------------
 // Free CPU pinned memory previously allocated by magma_malloc_pinned.
 extern "C"
 magma_int_t magma_free_pinned_internal( void* ptr,
